@@ -19,8 +19,9 @@ struct ContentView: View {
         let width = Int(bounds.width)
         let height = Int(bounds.height)
         let scroll_height = CGFloat(height/100*35)
-        let keyboard_height = CGFloat(height/100*50)
+        let keyboard_height = CGFloat(height/100*35)
 
+        let item_height2 = CGFloat(height/100*5)
         let item_height = CGFloat(height/100*6)
         let item_width = CGFloat(width/100*40)
         let title_height = CGFloat(height/100*6)
@@ -32,6 +33,7 @@ struct ContentView: View {
  
         VStack{
             VStack{
+
                 /*===========================================================
                  上部
                  ===========================================================*/
@@ -252,8 +254,48 @@ struct ContentView: View {
                 .frame(height: scroll_height)
                 
             }
-            .background(Color(red: 240/255, green: 250/255, blue: 240/255))
+//            .background(Color(red: 240/255, green: 255/255, blue: 240/255))
+            .background(Color(red: 255/255, green: 255/255, blue: 220/255))
 
+            
+            /*===========================================================
+             中部
+             ===========================================================*/
+            VStack {
+                HStack{
+                    Button(action: {
+                        Trash_A()
+                        
+                    }){
+                        Image(systemName: "trash")
+                            .font(.title2)
+                            .foregroundColor(Color(red: 55/255, green: 55/255, blue: 55/255))
+                    }
+                    .frame(height: item_height2 )
+                    .frame(width: item_width )
+                    
+                    VStack{
+                        Text("")
+                            .font(.title3)
+                    }
+                    .frame(height: title_height )
+                    .frame(width: title_width )
+                    
+                    Button(action: {
+                        Trash_B()
+                
+                    }){
+                        Image(systemName: "trash")
+                            .font(.title2)
+                            .foregroundColor(Color(red: 55/255, green: 55/255, blue: 55/255))
+                    }
+                    .frame(height: item_height2 )
+                    .frame(width: item_width )
+                }
+                .frame(height: item_height)
+                .padding(.horizontal)
+            }
+            
             
             /*===========================================================
              下部
@@ -485,6 +527,10 @@ struct ContentView: View {
             }
             .frame(height: keyboard_height)
             
+            
+            Text("広告スペース")
+                .frame(height: 50)
+
         }
         
         Spacer()
@@ -520,6 +566,13 @@ struct ContentView: View {
     func Discount_B(){
         
     }
+    func Trash_A(){
+        
+    }
+    func Trash_B(){
+        
+    }
+
     func Num_00(){
         
     }
@@ -568,6 +621,7 @@ struct ContentView: View {
     func Num_Empty(){
         
     }
+    
 
 
 }
