@@ -25,6 +25,8 @@ struct ContentView: View {
     @State var point_b:String = "";
     @State var discount_a:String = "";
     @State var discount_b:String = "";
+    @State var unit_price_a:String = "計算待ち...";
+    @State var unit_price_b:String = "計算待ち...";
 
     
     let buttonPositions: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -33,11 +35,12 @@ struct ContentView: View {
     @State private var sproxy: ScrollViewProxy?
     
     var body: some View {
+        let admob_height = CGFloat(50)
         let bounds = UIScreen.main.bounds
         let width = Int(bounds.width)
-        let height = Int(bounds.height)-50
-        let scroll_height = CGFloat(height/100*30)
-        let keyboard_height = CGFloat(height/100*40)
+        let height = Int(bounds.height)-Int(admob_height)
+        let scroll_height = CGFloat(height/100*32)
+        let keyboard_height = CGFloat(height/100*38)
 
         let item_height2 = CGFloat(height/100*5)
         let item_height = CGFloat(height/100*6)
@@ -57,12 +60,12 @@ struct ContentView: View {
                  ===========================================================*/
                 //単価
                 HStack{
-                    Label("120", systemImage: isWhitch == 0 ? "star.fill" : "" )
-                        .foregroundColor(isWhitch == 0 ? Color.red : Color.gray)
+                    Label(unit_price_a, systemImage: isWhitch == 1 ? "star.fill" : "" )
+                        .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
                         .frame(height: item_height )
                         .frame(width: item_width )
-                        .font(.title)
-                        .underline(true, color: isWhitch == 0 ? Color.red : Color.gray)
+                        .font(.title2)
+                        .underline(true, color: isWhitch == 1 ? Color.red : Color.gray)
                     
                     VStack{
                         Text("お得")
@@ -71,12 +74,12 @@ struct ContentView: View {
                     .frame(height: title_height )
                     .frame(width: title_width )
                     
-                    Label("110", systemImage: isWhitch == 1 ? "star.fill" : "" )
-                        .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
+                    Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
+                        .foregroundColor(isWhitch == 2 ? Color.red : Color.gray)
                         .frame(height: item_height )
                         .frame(width: item_width )
-                        .font(.title)
-                        .underline(true, color: isWhitch == 1 ? Color.red : Color.gray)
+                        .font(.title2)
+                        .underline(true, color: isWhitch == 2 ? Color.red : Color.gray)
                 }
                 .frame(height: element_height)
                 .padding(.horizontal)
@@ -89,6 +92,8 @@ struct ContentView: View {
                                 Price_A()
                             }){
                                 Text(price_a)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .id(buttonPositions[0])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -107,6 +112,8 @@ struct ContentView: View {
                                 Price_B()
                             }){
                                 Text(price_b)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .id(buttonPositions[1])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -124,6 +131,8 @@ struct ContentView: View {
                                 Capacity_A()
                             }){
                                 Text(capacity_a)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
                                     .overlay(
@@ -141,6 +150,8 @@ struct ContentView: View {
                                 Capacity_B()
                             }){
                                 Text(capacity_b)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
                                     .overlay(
@@ -158,6 +169,8 @@ struct ContentView: View {
                                 
                             }){
                                 Text(quantity_a)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
                                     .overlay(
@@ -175,6 +188,8 @@ struct ContentView: View {
                                 Quantity_B()
                             }){
                                 Text(quantity_b)
+                                .font(.title2)
+                                .foregroundColor(.black)
                                 .frame(height: item_height )
                                 .frame(width: item_width )
                                 .overlay(
@@ -191,6 +206,8 @@ struct ContentView: View {
                                 Point_A()
                             }){
                                 Text(point_a)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .id(buttonPositions[6])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -209,6 +226,8 @@ struct ContentView: View {
                                 Point_B()
                             }){
                                 Text(point_b)
+                                .font(.title2)
+                                .foregroundColor(.black)
                                 .id(buttonPositions[7])
                                 .frame(height: item_height )
                                 .frame(width: item_width )
@@ -241,6 +260,8 @@ struct ContentView: View {
                                     Discount_A()
                                 }){
                                     Text(discount_a)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .id(buttonPositions[8])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -274,6 +295,8 @@ struct ContentView: View {
                                     Discount_B()
                                 }){
                                     Text(discount_b)
+                                    .font(.title2)
+                                    .foregroundColor(.black)
                                     .id(buttonPositions[9])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -595,72 +618,250 @@ struct ContentView: View {
 
             
             Text("広告スペース")
-                .frame(height: 50)
+                .frame(height: admob_height)
+                .background(Color(red: 85/255, green: 85/255, blue: 85/255))
 
         }
-        
-        Spacer()
     }
+    func Calculation(){
+        var pri_a:Double = 0
+        var pri_b:Double = 0
+        var capa_a:Double = 0
+        var capa_b:Double = 0
+        var quan_a:Double = 0
+        var quan_b:Double = 0
+        var poi_a:Double = 0
+        var poi_b:Double = 0
+        var dis_a:Double = 0
+        var dis_b:Double = 0
+        var tmp_a:Double = 0
+        var tmp_b:Double = 0
+        
+                
+        if price_a.isEmpty == false {
+            if let tmp = Double(price_a){
+                pri_a = tmp
+            }
+            else{
+                pri_a = 0;
+            }
+        }
+        if price_b.isEmpty == false {
+            if let tmp = Double(price_b){
+                pri_b = tmp
+            }
+            else{
+                pri_b = 0;
+            }
+        }
+        if capacity_a.isEmpty == false {
+            if let tmp = Double(capacity_a){
+                capa_a = tmp
+            }
+            else{
+                capa_a = 0;
+            }
+        }
+        if capacity_b.isEmpty == false {
+            if let tmp = Double(capacity_b){
+                capa_b = tmp
+            }
+            else{
+                capa_b = 0;
+            }
+        }
+        if quantity_a.isEmpty == false {
+            if let tmp = Double(quantity_a){
+                quan_a = tmp
+            }
+            else{
+                quan_a = 0;
+            }
+        }
+        if quantity_b.isEmpty == false {
+            if let tmp = Double(quantity_b){
+                quan_b = tmp
+            }
+            else{
+                quan_b = 0;
+            }
+        }
+        if point_a.isEmpty == false {
+            if let tmp = Double(point_a){
+                poi_a = tmp
+            }
+            else{
+                poi_a = 0;
+            }
+        }
+        if point_b.isEmpty == false {
+            if let tmp = Double(point_b){
+                poi_b = tmp
+            }
+            else{
+                poi_b = 0;
+            }
+        }
+        if discount_a.isEmpty == false {
+            if let tmp = Double(discount_a){
+                dis_a = tmp
+            }
+            else{
+                dis_a = 0;
+            }
+        }
+        if discount_b.isEmpty == false {
+            if let tmp = Double(discount_b){
+                dis_b = tmp
+            }
+            else{
+                dis_b = 0;
+            }
+        }
+
+        //計算に必要な入力必須項目のチェック
+        if pri_a <= 0 || (capa_a <= 0 && quan_a <= 0) ||
+            pri_b <= 0 || (capa_b <= 0 && quan_b <= 0) {
+            unit_price_a = "計算待ち..."
+            unit_price_b = "計算待ち..."
+            isWhitch = 0
+            return
+        }
+        
+        tmp_a = pri_a
+        tmp_b = pri_b
+        
+        //数量を計算に考慮
+        if quan_a > 0 {
+            tmp_a = (tmp_a / quan_a)
+        }
+        if quan_b > 0 {
+            tmp_b = (tmp_b / quan_b)
+        }
+
+//        if tmp_a <= 0 || tmp_b <= 0 {
+//            return
+//        }
+        //容量を計算に考慮
+        if capa_a > 0 {
+            tmp_a = (tmp_a / capa_a)
+        }
+        if capa_b > 0 {
+            tmp_b = (tmp_b / capa_b)
+        }
+        
+        var tmp_dis_a:Double = 0
+        var tmp_dis_b:Double = 0
+
+        //割引き
+        if dis_a > 0 {
+            if discount_type_A == "1" {
+                tmp_dis_a = pri_a * dis_a
+                tmp_dis_a = tmp_dis_a / 100
+                tmp_a = tmp_a - tmp_dis_a
+            }
+            else if discount_type_A == "2" {
+                tmp_a = tmp_a - dis_a
+            }
+        }
+        if dis_b > 0 {
+            if discount_type_B == "1" {
+                tmp_dis_b = pri_b * dis_b
+                tmp_dis_b = tmp_dis_b / 100
+                tmp_b = tmp_b - tmp_dis_b
+            }
+            else if discount_type_B == "2" {
+                tmp_b = tmp_b - dis_b
+            }
+        }
+
+        
+        //ポイントを計算に考慮
+        if poi_a > 0 {
+            tmp_a = tmp_a - poi_a
+        }
+        if poi_b > 0 {
+            tmp_b = tmp_b - poi_b
+        }
+        
+        let tmp_a_str = String(format: "%.2f", tmp_a)
+        unit_price_a = tmp_a_str
+        let tmp_b_str = String(format: "%.2f", tmp_b)
+        unit_price_b = tmp_b_str
+
+        //結果
+        if tmp_a < tmp_b {
+            isWhitch = 1
+        }
+        else if tmp_b < tmp_a {
+            isWhitch = 2
+        }
+        else {
+            isWhitch = 0
+        }
+        
+    }
+    
     func NumDataInput(){
         //cursorによってswitch caseでデータセット
         switch CurIndex {
         case 0: //価格A
             if input_data.contains(".") == true && price_a.contains(".") == true {
-                return;
+                break;
             }
             price_a += input_data
             break;
         case 1: //価格B
             if input_data.contains(".") == true && price_b.contains(".") == true {
-                return;
+                break;
             }
             price_b += input_data
             break;
         case 2: //容量A
             if input_data.contains(".") == true && capacity_a.contains(".") == true {
-                return;
+                break;
             }
             capacity_a += input_data
             break;
         case 3: //容量B
             if input_data.contains(".") == true && capacity_b.contains(".") == true {
-                return;
+                break;
             }
             capacity_b += input_data
             break;
         case 4: //数量A
             if input_data.contains(".") == true && quantity_a.contains(".") == true {
-                return;
+                break;
             }
             quantity_a += input_data
             break;
         case 5: //数量B
             if input_data.contains(".") == true && quantity_b.contains(".") == true {
-                return;
+                break;
             }
             quantity_b += input_data
             break;
         case 6: //ポイントA
             if input_data.contains(".") == true && point_a.contains(".") == true {
-                return;
+                break;
             }
             point_a += input_data
             break;
         case 7: //ポイントB
             if input_data.contains(".") == true && point_b.contains(".") == true {
-                return;
+                break;
             }
             point_b += input_data
             break;
         case 8: //割引きA
             if input_data.contains(".") == true && discount_a.contains(".") == true {
-                return;
+                break;
             }
             discount_a += input_data
             break;
         case 9: //割引きB
             if input_data.contains(".") == true && discount_b.contains(".") == true {
-                return;
+                break;
             }
             discount_b += input_data
             break;
@@ -672,6 +873,7 @@ struct ContentView: View {
         
         input_data = ""
 
+        Calculation()
         //画面表示更新
         //計算処理
         
@@ -713,6 +915,8 @@ struct ContentView: View {
         quantity_a = ""
         point_a = ""
         discount_a = ""
+        unit_price_a = "計算待ち..."
+        isWhitch = 0
     }
     func Trash_B(){
         price_b = ""
@@ -720,6 +924,8 @@ struct ContentView: View {
         quantity_b = ""
         point_b = ""
         discount_b = ""
+        unit_price_b = "計算待ち..."
+        isWhitch = 0
     }
     func Trash_ALL(){
         Trash_B()
@@ -915,7 +1121,10 @@ struct ContentView: View {
         default:
             break;
         }
+        
+        Calculation()
     }
+    
     func Num_Empty(){
         
     }
