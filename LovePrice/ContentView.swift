@@ -60,12 +60,21 @@ struct ContentView: View {
                  ===========================================================*/
                 //単価
                 HStack{
-                    Label(unit_price_a, systemImage: isWhitch == 1 ? "star.fill" : "" )
-                        .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
-                        .frame(height: item_height )
-                        .frame(width: item_width )
-                        .font(.title2)
-                        .underline(true, color: isWhitch == 1 ? Color.red : Color.gray)
+                    if #available(iOS 16.0, *) {
+                        Label(unit_price_a, systemImage: isWhitch == 1 ? "star.fill" : "" )
+                            .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
+                            .frame(height: item_height )
+                            .frame(width: item_width )
+                            .font(.title2)
+                            .underline(true, color: isWhitch == 1 ? Color.red : Color.gray)
+                    } else {
+                        // Fallback on earlier versions
+                        Label(unit_price_a, systemImage: isWhitch == 1 ? "star.fill" : "" )
+                            .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
+                            .frame(height: item_height )
+                            .frame(width: item_width )
+                            .font(.title2)
+                    }
                     
                     VStack{
                         Text("お得")
@@ -74,12 +83,21 @@ struct ContentView: View {
                     .frame(height: title_height )
                     .frame(width: title_width )
                     
-                    Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
-                        .foregroundColor(isWhitch == 2 ? Color.red : Color.gray)
-                        .frame(height: item_height )
-                        .frame(width: item_width )
-                        .font(.title2)
-                        .underline(true, color: isWhitch == 2 ? Color.red : Color.gray)
+                    if #available(iOS 16.0, *) {
+                        Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
+                            .foregroundColor(isWhitch == 2 ? Color.red : Color.gray)
+                            .frame(height: item_height )
+                            .frame(width: item_width )
+                            .font(.title2)
+                            .underline(true, color: isWhitch == 2 ? Color.red : Color.gray)
+                    } else {
+                        // Fallback on earlier versions
+                        Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
+                            .foregroundColor(isWhitch == 2 ? Color.red : Color.gray)
+                            .frame(height: item_height )
+                            .frame(width: item_width )
+                            .font(.title2)
+                    }
                 }
                 .frame(height: element_height)
                 .padding(.horizontal)
@@ -617,9 +635,8 @@ struct ContentView: View {
             .padding(.horizontal, 5)
 
             
-            Text("広告スペース")
+            Text("  ")
                 .frame(height: admob_height)
-                .background(Color(red: 85/255, green: 85/255, blue: 85/255))
 
         }
     }
