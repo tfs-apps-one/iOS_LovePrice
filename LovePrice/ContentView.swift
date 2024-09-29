@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import GoogleMobileAds
+
 
 struct ContentView: View {
     
@@ -25,8 +27,8 @@ struct ContentView: View {
     @State var point_b:String = "";
     @State var discount_a:String = "";
     @State var discount_b:String = "";
-    @State var unit_price_a:String = "計算待ち...";
-    @State var unit_price_b:String = "計算待ち...";
+    @State var unit_price_a:String = "単位価格？";
+    @State var unit_price_b:String = "単位価格？";
 
     
     let buttonPositions: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
@@ -85,15 +87,15 @@ struct ContentView: View {
                     
                     if #available(iOS 16.0, *) {
                         Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
-                            .foregroundColor(isWhitch == 2 ? Color.red : Color.gray)
+                            .foregroundColor(isWhitch == 2 ? Color.blue : Color.gray)
                             .frame(height: item_height )
                             .frame(width: item_width )
                             .font(.title2)
-                            .underline(true, color: isWhitch == 2 ? Color.red : Color.gray)
+                            .underline(true, color: isWhitch == 2 ? Color.blue : Color.gray)
                     } else {
                         // Fallback on earlier versions
                         Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
-                            .foregroundColor(isWhitch == 2 ? Color.red : Color.gray)
+                            .foregroundColor(isWhitch == 2 ? Color.blue : Color.gray)
                             .frame(height: item_height )
                             .frame(width: item_width )
                             .font(.title2)
@@ -111,7 +113,7 @@ struct ContentView: View {
                             }){
                                 Text(price_a)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 1 ? .red : .black)
                                     .id(buttonPositions[0])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -131,7 +133,7 @@ struct ContentView: View {
                             }){
                                 Text(price_b)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 2 ? .blue : .black)
                                     .id(buttonPositions[1])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -150,7 +152,7 @@ struct ContentView: View {
                             }){
                                 Text(capacity_a)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 1 ? .red : .black)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
                                     .overlay(
@@ -169,7 +171,7 @@ struct ContentView: View {
                             }){
                                 Text(capacity_b)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 2 ? .blue : .black)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
                                     .overlay(
@@ -188,7 +190,7 @@ struct ContentView: View {
                             }){
                                 Text(quantity_a)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 1 ? .red : .black)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
                                     .overlay(
@@ -207,7 +209,7 @@ struct ContentView: View {
                             }){
                                 Text(quantity_b)
                                 .font(.title2)
-                                .foregroundColor(.black)
+                                .foregroundColor(isWhitch == 2 ? .blue : .black)
                                 .frame(height: item_height )
                                 .frame(width: item_width )
                                 .overlay(
@@ -225,7 +227,7 @@ struct ContentView: View {
                             }){
                                 Text(point_a)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 1 ? .red : .black)
                                     .id(buttonPositions[6])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -245,7 +247,7 @@ struct ContentView: View {
                             }){
                                 Text(point_b)
                                 .font(.title2)
-                                .foregroundColor(.black)
+                                .foregroundColor(isWhitch == 2 ? .blue : .black)
                                 .id(buttonPositions[7])
                                 .frame(height: item_height )
                                 .frame(width: item_width )
@@ -279,7 +281,7 @@ struct ContentView: View {
                                 }){
                                     Text(discount_a)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 1 ? .red : .black)
                                     .id(buttonPositions[8])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -314,7 +316,7 @@ struct ContentView: View {
                                 }){
                                     Text(discount_b)
                                     .font(.title2)
-                                    .foregroundColor(.black)
+                                    .foregroundColor(isWhitch == 2 ? .blue : .black)
                                     .id(buttonPositions[9])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
@@ -634,9 +636,14 @@ struct ContentView: View {
             .background(Color(red: 85/255, green: 85/255, blue: 85/255))
             .padding(.horizontal, 5)
 
-            
-            Text("  ")
-                .frame(height: admob_height)
+
+            //広告
+            BannerAdView()
+            .frame(width: GADAdSizeBanner.size.width, height:
+                  GADAdSizeBanner.size.height)
+
+//            Text("  ")
+//                .frame(height: admob_height)
 
         }
     }
@@ -739,8 +746,8 @@ struct ContentView: View {
         //計算に必要な入力必須項目のチェック
         if pri_a <= 0 || (capa_a <= 0 && quan_a <= 0) ||
             pri_b <= 0 || (capa_b <= 0 && quan_b <= 0) {
-            unit_price_a = "計算待ち..."
-            unit_price_b = "計算待ち..."
+            unit_price_a = "単位価格？"
+            unit_price_b = "単位価格？"
             isWhitch = 0
             return
         }
@@ -932,7 +939,7 @@ struct ContentView: View {
         quantity_a = ""
         point_a = ""
         discount_a = ""
-        unit_price_a = "計算待ち..."
+        unit_price_a = "単位価格？"
         isWhitch = 0
     }
     func Trash_B(){
@@ -941,7 +948,7 @@ struct ContentView: View {
         quantity_b = ""
         point_b = ""
         discount_b = ""
-        unit_price_b = "計算待ち..."
+        unit_price_b = "単位価格？"
         isWhitch = 0
     }
     func Trash_ALL(){

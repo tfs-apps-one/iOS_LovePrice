@@ -1,0 +1,6 @@
+framework module Pods_LovePrice {
+  umbrella header "Pods-LovePrice-umbrella.h"
+
+  export *
+  module * { export * }
+}

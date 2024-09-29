@@ -7,13 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7577663E0E2AE7BC6AC5862F /* Pods_LovePrice.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ACFAC14A5701A079CBD8336D /* Pods_LovePrice.framework */; };
 		FA57A45A2C8BC88900B4ACAF /* LovePriceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57A4592C8BC88900B4ACAF /* LovePriceApp.swift */; };
 		FA57A45C2C8BC88900B4ACAF /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA57A45B2C8BC88900B4ACAF /* ContentView.swift */; };
 		FA57A45E2C8BC88A00B4ACAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA57A45D2C8BC88A00B4ACAF /* Assets.xcassets */; };
 		FA57A4622C8BC88A00B4ACAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA57A4612C8BC88A00B4ACAF /* Preview Assets.xcassets */; };
+		FA87CA942CA7FA1F00478700 /* BannerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87CA932CA7FA1F00478700 /* BannerAdView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8813FF89185FFF2EF61A4B02 /* Pods-LovePrice.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePrice.release.xcconfig"; path = "Target Support Files/Pods-LovePrice/Pods-LovePrice.release.xcconfig"; sourceTree = "<group>"; };
+		ACFAC14A5701A079CBD8336D /* Pods_LovePrice.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LovePrice.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E44290FBBF51FFCD1144D223 /* Pods-LovePrice.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LovePrice.debug.xcconfig"; path = "Target Support Files/Pods-LovePrice/Pods-LovePrice.debug.xcconfig"; sourceTree = "<group>"; };
 		FA57A4562C8BC88900B4ACAF /* LovePrice.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LovePrice.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA57A4592C8BC88900B4ACAF /* LovePriceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LovePriceApp.swift; sourceTree = "<group>"; };
 		FA57A45B2C8BC88900B4ACAF /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -21,6 +26,7 @@
 		FA57A45F2C8BC88A00B4ACAF /* LovePrice.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = LovePrice.entitlements; sourceTree = "<group>"; };
 		FA57A4612C8BC88A00B4ACAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA6A05AA2C95048200228DE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FA87CA932CA7FA1F00478700 /* BannerAdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,17 +34,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7577663E0E2AE7BC6AC5862F /* Pods_LovePrice.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0BC1BCC01777A3836E488FDE /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				ACFAC14A5701A079CBD8336D /* Pods_LovePrice.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C48A9404D9ED7DA1B8D023D7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E44290FBBF51FFCD1144D223 /* Pods-LovePrice.debug.xcconfig */,
+				8813FF89185FFF2EF61A4B02 /* Pods-LovePrice.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		FA57A44D2C8BC88900B4ACAF = {
 			isa = PBXGroup;
 			children = (
 				FA57A4582C8BC88900B4ACAF /* LovePrice */,
 				FA57A4572C8BC88900B4ACAF /* Products */,
+				C48A9404D9ED7DA1B8D023D7 /* Pods */,
+				0BC1BCC01777A3836E488FDE /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,6 +82,7 @@
 				FA6A05AA2C95048200228DE1 /* Info.plist */,
 				FA57A4592C8BC88900B4ACAF /* LovePriceApp.swift */,
 				FA57A45B2C8BC88900B4ACAF /* ContentView.swift */,
+				FA87CA932CA7FA1F00478700 /* BannerAdView.swift */,
 				FA57A45D2C8BC88A00B4ACAF /* Assets.xcassets */,
 				FA57A45F2C8BC88A00B4ACAF /* LovePrice.entitlements */,
 				FA57A4602C8BC88A00B4ACAF /* Preview Content */,
@@ -78,9 +105,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FA57A4652C8BC88A00B4ACAF /* Build configuration list for PBXNativeTarget "LovePrice" */;
 			buildPhases = (
+				449BFD79CD7A1493CDC6199A /* [CP] Check Pods Manifest.lock */,
 				FA57A4522C8BC88900B4ACAF /* Sources */,
 				FA57A4532C8BC88900B4ACAF /* Frameworks */,
 				FA57A4542C8BC88900B4ACAF /* Resources */,
+				9F16DD0AA916F6444FECC3AA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -136,11 +165,54 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		449BFD79CD7A1493CDC6199A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-LovePrice-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9F16DD0AA916F6444FECC3AA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LovePrice/Pods-LovePrice-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-LovePrice/Pods-LovePrice-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-LovePrice/Pods-LovePrice-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		FA57A4522C8BC88900B4ACAF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA87CA942CA7FA1F00478700 /* BannerAdView.swift in Sources */,
 				FA57A45C2C8BC88900B4ACAF /* ContentView.swift in Sources */,
 				FA57A45A2C8BC88900B4ACAF /* LovePriceApp.swift in Sources */,
 			);
@@ -186,7 +258,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -247,7 +319,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -265,12 +337,13 @@
 		};
 		FA57A4662C8BC88A00B4ACAF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E44290FBBF51FFCD1144D223 /* Pods-LovePrice.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LovePrice/LovePrice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"LovePrice/Preview Content\"";
 				DEVELOPMENT_TEAM = FD75RKYVZQ;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -294,7 +367,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = tfsapps.lp.LovePrice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -307,12 +380,13 @@
 		};
 		FA57A4672C8BC88A00B4ACAF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8813FF89185FFF2EF61A4B02 /* Pods-LovePrice.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LovePrice/LovePrice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_ASSET_PATHS = "\"LovePrice/Preview Content\"";
 				DEVELOPMENT_TEAM = FD75RKYVZQ;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -336,7 +410,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.5;
 				PRODUCT_BUNDLE_IDENTIFIER = tfsapps.lp.LovePrice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
