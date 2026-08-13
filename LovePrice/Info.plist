@@ -4,5 +4,9 @@
 <dict>
     <key>GADApplicationIdentifier</key>
     <string>ca-app-pub-4924620089567925~2754819218</string>
+    <key>NSCameraUsageDescription</key>
+    <string>値札をカメラで読み取り、価格・容量を自動入力するために使用します。</string>
+    <key>NSUserTrackingUsageDescription</key>
+    <string>お客様に関連性の高い広告を表示するために、このデータを使用します。</string>
     </dict>
 </plist>

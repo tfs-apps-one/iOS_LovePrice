@@ -13,6 +13,14 @@
 		FA57A45E2C8BC88A00B4ACAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA57A45D2C8BC88A00B4ACAF /* Assets.xcassets */; };
 		FA57A4622C8BC88A00B4ACAF /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA57A4612C8BC88A00B4ACAF /* Preview Assets.xcassets */; };
 		FA87CA942CA7FA1F00478700 /* BannerAdView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA87CA932CA7FA1F00478700 /* BannerAdView.swift */; };
+		CBF3A6B51C7B2E1C23A9796D /* PriceTagParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75506E4A5CC6ECD1A69E9913 /* PriceTagParser.swift */; };
+		8CC31BCEB23A477C92067D7A /* PriceTagScannerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42892172FE1B753EAD11C5D2 /* PriceTagScannerViewModel.swift */; };
+		9E5F06107B087CF71643403E /* CameraPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A085E0ECF21DC3A6A2ACE50D /* CameraPreviewView.swift */; };
+		0FAE72602771D096D5A1FF33 /* ScanOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA6584D6950C5CFD4DF7A5D /* ScanOverlayView.swift */; };
+		D6367F661A9B664FA260463E /* PriceTagScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E44DC5FCEBA71C49F4C23523 /* PriceTagScannerView.swift */; };
+		CA29DA2918B942288D2A9BFA /* AppTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C004CBE0C14F48D98218238F /* AppTheme.swift */; };
+		99728AD4E54D4844987227B2 /* InterstitialAdManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DC10960C6684B22AE759ABC /* InterstitialAdManager.swift */; };
+		56345FE1CF134DC6A4E55717 /* HelpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA18DF3F41340C6A3464FB4 /* HelpView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +35,14 @@
 		FA57A4612C8BC88A00B4ACAF /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		FA6A05AA2C95048200228DE1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		FA87CA932CA7FA1F00478700 /* BannerAdView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannerAdView.swift; sourceTree = "<group>"; };
+		75506E4A5CC6ECD1A69E9913 /* PriceTagParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTagParser.swift; sourceTree = "<group>"; };
+		42892172FE1B753EAD11C5D2 /* PriceTagScannerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTagScannerViewModel.swift; sourceTree = "<group>"; };
+		A085E0ECF21DC3A6A2ACE50D /* CameraPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPreviewView.swift; sourceTree = "<group>"; };
+		2CA6584D6950C5CFD4DF7A5D /* ScanOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanOverlayView.swift; sourceTree = "<group>"; };
+		E44DC5FCEBA71C49F4C23523 /* PriceTagScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriceTagScannerView.swift; sourceTree = "<group>"; };
+		C004CBE0C14F48D98218238F /* AppTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppTheme.swift; sourceTree = "<group>"; };
+		7DC10960C6684B22AE759ABC /* InterstitialAdManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterstitialAdManager.swift; sourceTree = "<group>"; };
+		CBA18DF3F41340C6A3464FB4 /* HelpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +99,14 @@
 				FA57A4592C8BC88900B4ACAF /* LovePriceApp.swift */,
 				FA57A45B2C8BC88900B4ACAF /* ContentView.swift */,
 				FA87CA932CA7FA1F00478700 /* BannerAdView.swift */,
+				C004CBE0C14F48D98218238F /* AppTheme.swift */,
+				7DC10960C6684B22AE759ABC /* InterstitialAdManager.swift */,
+				CBA18DF3F41340C6A3464FB4 /* HelpView.swift */,
+				75506E4A5CC6ECD1A69E9913 /* PriceTagParser.swift */,
+				42892172FE1B753EAD11C5D2 /* PriceTagScannerViewModel.swift */,
+				A085E0ECF21DC3A6A2ACE50D /* CameraPreviewView.swift */,
+				2CA6584D6950C5CFD4DF7A5D /* ScanOverlayView.swift */,
+				E44DC5FCEBA71C49F4C23523 /* PriceTagScannerView.swift */,
 				FA57A45D2C8BC88A00B4ACAF /* Assets.xcassets */,
 				FA57A45F2C8BC88A00B4ACAF /* LovePrice.entitlements */,
 				FA57A4602C8BC88A00B4ACAF /* Preview Content */,
@@ -219,6 +243,14 @@
 				FA87CA942CA7FA1F00478700 /* BannerAdView.swift in Sources */,
 				FA57A45C2C8BC88900B4ACAF /* ContentView.swift in Sources */,
 				FA57A45A2C8BC88900B4ACAF /* LovePriceApp.swift in Sources */,
+				CBF3A6B51C7B2E1C23A9796D /* PriceTagParser.swift in Sources */,
+				8CC31BCEB23A477C92067D7A /* PriceTagScannerViewModel.swift in Sources */,
+				9E5F06107B087CF71643403E /* CameraPreviewView.swift in Sources */,
+				0FAE72602771D096D5A1FF33 /* ScanOverlayView.swift in Sources */,
+				D6367F661A9B664FA260463E /* PriceTagScannerView.swift in Sources */,
+				CA29DA2918B942288D2A9BFA /* AppTheme.swift in Sources */,
+				99728AD4E54D4844987227B2 /* InterstitialAdManager.swift in Sources */,
+				56345FE1CF134DC6A4E55717 /* HelpView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -351,7 +383,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LovePrice/LovePrice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"LovePrice/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -375,7 +407,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = tfsapps.lp.LovePrice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -394,7 +426,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = LovePrice/LovePrice.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_ASSET_PATHS = "\"LovePrice/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -418,7 +450,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 14.5;
-				MARKETING_VERSION = 1.6;
+				MARKETING_VERSION = 1.7;
 				PRODUCT_BUNDLE_IDENTIFIER = tfsapps.lp.LovePrice;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

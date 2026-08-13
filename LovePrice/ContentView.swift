@@ -30,7 +30,17 @@ struct ContentView: View {
     @State var unit_price_a:String = "単位価格？";
     @State var unit_price_b:String = "単位価格？";
 
-    
+    // AR一発入力モード
+    @State private var showARScanner = false
+    // ARスキャンボタンのタップ回数（7回ごとに全面広告を1回表示するためのカウンタ）
+    // @AppStorage で UserDefaults に永続化し、アプリを終了して再起動しても
+    // 前回の続きからカウントを継続する。
+    @AppStorage("arScanTapCount") private var arScanTapCount = 0
+    @StateObject private var interstitialAdManager = InterstitialAdManager()
+
+    // 使い方ガイド（？ボタン）
+    @State private var showHelp = false
+
     let buttonPositions: [Int] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     // スクロール位置の管理用
@@ -50,11 +60,12 @@ struct ContentView: View {
         let title_height = CGFloat(height/100*6)
         let title_width = CGFloat(width/100*15)
         let element_height = CGFloat(height/100*7)
+        let ar_button_height = CGFloat(height/100*7)
 
         let button_weight =  CGFloat(width/100*22)
         let button_height =  CGFloat(height/100*8)
- 
-        VStack{
+
+        VStack(spacing: 6){
             
             VStack{
                 /*===========================================================
@@ -62,44 +73,83 @@ struct ContentView: View {
                  ===========================================================*/
                 //単価
                 HStack{
-                    if #available(iOS 16.0, *) {
-                        Label(unit_price_a, systemImage: isWhitch == 1 ? "star.fill" : "" )
-                            .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
-                            .frame(height: item_height )
-                            .frame(width: item_width )
-                            .font(.title2)
-                            .underline(true, color: isWhitch == 1 ? Color.red : Color.gray)
-                    } else {
-                        // Fallback on earlier versions
-                        Label(unit_price_a, systemImage: isWhitch == 1 ? "star.fill" : "" )
-                            .foregroundColor(isWhitch == 1 ? Color.red : Color.gray)
-                            .frame(height: item_height )
-                            .frame(width: item_width )
-                            .font(.title2)
+                    Group {
+                        if #available(iOS 16.0, *) {
+                            Label(unit_price_a, systemImage: "")
+                                .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textSecondary)
+                                .frame(height: item_height )
+                                .frame(width: item_width )
+                                .font(.title2)
+                                .underline(true, color: isWhitch == 1 ? AppTheme.coral : AppTheme.textSecondary)
+                        } else {
+                            // Fallback on earlier versions
+                            Label(unit_price_a, systemImage: "")
+                                .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textSecondary)
+                                .frame(height: item_height )
+                                .frame(width: item_width )
+                                .font(.title2)
+                        }
                     }
-                    
+                    .background(
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(isWhitch == 1 ? AppTheme.coralLight : Color.clear))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(AppTheme.coral, lineWidth: isWhitch == 1 ? 3 : 0))
+                    .shadow(color: isWhitch == 1 ? AppTheme.coral.opacity(0.45) : .clear, radius: 8, x: 0, y: 2)
+                    .scaleEffect(isWhitch == 1 ? 1.08 : 1.0)
+                    .overlay(
+                        Group {
+                            if isWhitch == 1 {
+                                dealBadge(color: AppTheme.coral)
+                                    .offset(x: -8, y: -10)
+                            }
+                        },
+                        alignment: .topLeading)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isWhitch)
+
                     VStack{
                         Text("お得")
                         Image(systemName: "yensign")
                     }
+                    .foregroundColor(AppTheme.textSecondary)
                     .frame(height: title_height )
                     .frame(width: title_width )
-                    
-                    if #available(iOS 16.0, *) {
-                        Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
-                            .foregroundColor(isWhitch == 2 ? Color.blue : Color.gray)
-                            .frame(height: item_height )
-                            .frame(width: item_width )
-                            .font(.title2)
-                            .underline(true, color: isWhitch == 2 ? Color.blue : Color.gray)
-                    } else {
-                        // Fallback on earlier versions
-                        Label(unit_price_b, systemImage: isWhitch == 2 ? "star.fill" : "" )
-                            .foregroundColor(isWhitch == 2 ? Color.blue : Color.gray)
-                            .frame(height: item_height )
-                            .frame(width: item_width )
-                            .font(.title2)
+
+                    Group {
+                        if #available(iOS 16.0, *) {
+                            Label(unit_price_b, systemImage: "")
+                                .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textSecondary)
+                                .frame(height: item_height )
+                                .frame(width: item_width )
+                                .font(.title2)
+                                .underline(true, color: isWhitch == 2 ? AppTheme.indigo : AppTheme.textSecondary)
+                        } else {
+                            // Fallback on earlier versions
+                            Label(unit_price_b, systemImage: "")
+                                .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textSecondary)
+                                .frame(height: item_height )
+                                .frame(width: item_width )
+                                .font(.title2)
+                        }
                     }
+                    .background(
+                        RoundedRectangle(cornerRadius: 14)
+                            .fill(isWhitch == 2 ? AppTheme.indigoLight : Color.clear))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14)
+                            .stroke(AppTheme.indigo, lineWidth: isWhitch == 2 ? 3 : 0))
+                    .shadow(color: isWhitch == 2 ? AppTheme.indigo.opacity(0.45) : .clear, radius: 8, x: 0, y: 2)
+                    .scaleEffect(isWhitch == 2 ? 1.08 : 1.0)
+                    .overlay(
+                        Group {
+                            if isWhitch == 2 {
+                                dealBadge(color: AppTheme.indigo)
+                                    .offset(x: 8, y: -10)
+                            }
+                        },
+                        alignment: .topTrailing)
+                    .animation(.spring(response: 0.4, dampingFraction: 0.6), value: isWhitch)
                 }
                 .frame(height: element_height)
                 .padding(.horizontal)
@@ -113,33 +163,40 @@ struct ContentView: View {
                             }){
                                 Text(price_a)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 1 ? .red : .black)
+                                    .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textPrimary)
                                     .id(buttonPositions[0])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 0 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 0 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 0 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 0 ? 3 : 1.5))
                             }
                             VStack{
                                 Text("価格")
                                 Image(systemName: "yensign.circle")
                             }
+                            .foregroundColor(AppTheme.textSecondary)
                             .frame(height: title_height )
                             .frame(width: title_width )
-                            
+
                             Button(action: {
                                 Price_B()
                             }){
                                 Text(price_b)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 2 ? .blue : .black)
+                                    .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textPrimary)
                                     .id(buttonPositions[1])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 1 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 1 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 1 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 1 ? 3 : 1.5))
                             }
                         }
                         .frame(height: element_height)
@@ -152,31 +209,38 @@ struct ContentView: View {
                             }){
                                 Text(capacity_a)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 1 ? .red : .black)
+                                    .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textPrimary)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 2 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 2 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 2 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 2 ? 3 : 1.5))
                             }
                             VStack{
                                 Text("容量")
                                 Image(systemName: "waterbottle")
                             }
+                            .foregroundColor(AppTheme.textSecondary)
                             .frame(height: title_height )
                             .frame(width: title_width )
-                            
+
                             Button(action: {
                                 Capacity_B()
                             }){
                                 Text(capacity_b)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 2 ? .blue : .black)
+                                    .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textPrimary)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 3 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 3 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 3 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 3 ? 3 : 1.5))
                             }
                         }
                         .frame(height: element_height)
@@ -190,31 +254,38 @@ struct ContentView: View {
                             }){
                                 Text(quantity_a)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 1 ? .red : .black)
+                                    .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textPrimary)
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 4 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 4 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 4 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 4 ? 3 : 1.5))
                             }
                             VStack{
                                 Text("数量")
                                 Image(systemName: "carrot")
                             }
+                            .foregroundColor(AppTheme.textSecondary)
                             .frame(height: title_height )
                             .frame(width: title_width )
-                            
+
                             Button(action : {
                                 Quantity_B()
                             }){
                                 Text(quantity_b)
                                 .font(.title2)
-                                .foregroundColor(isWhitch == 2 ? .blue : .black)
+                                .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textPrimary)
                                 .frame(height: item_height )
                                 .frame(width: item_width )
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(CurIndex == 5 ? AppTheme.amberLight : AppTheme.background))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(CurIndex == 5 ? Color.orange : Color.gray, lineWidth: 3))
+                                        .stroke(CurIndex == 5 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 5 ? 3 : 1.5))
                             }
                         }
                         .frame(height: element_height)
@@ -227,33 +298,40 @@ struct ContentView: View {
                             }){
                                 Text(point_a)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 1 ? .red : .black)
+                                    .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textPrimary)
                                     .id(buttonPositions[6])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 6 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 6 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 6 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 6 ? 3 : 1.5))
                             }
                             VStack{
                                 Text("ﾎﾟｲﾝﾄ")
                                 Image(systemName: "menucard")
                             }
+                            .foregroundColor(AppTheme.textSecondary)
                             .frame(height: title_height )
                             .frame(width: title_width )
-                            
+
                             Button(action : {
                                 Point_B()
                             }){
                                 Text(point_b)
                                 .font(.title2)
-                                .foregroundColor(isWhitch == 2 ? .blue : .black)
+                                .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textPrimary)
                                 .id(buttonPositions[7])
                                 .frame(height: item_height )
                                 .frame(width: item_width )
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .fill(CurIndex == 7 ? AppTheme.amberLight : AppTheme.background))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(CurIndex == 7 ? Color.orange : Color.gray, lineWidth: 3))
+                                        .stroke(CurIndex == 7 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 7 ? 3 : 1.5))
                             }
                         }
                         .frame(height: element_height)
@@ -281,20 +359,24 @@ struct ContentView: View {
                                 }){
                                     Text(discount_a)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 1 ? .red : .black)
+                                    .foregroundColor(isWhitch == 1 ? AppTheme.coral : AppTheme.textPrimary)
                                     .id(buttonPositions[8])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 8 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 8 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 8 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 8 ? 3 : 1.5))
                                 }
                             }
-                            
+
                             VStack{
                                 Text("割引")
                                 Image(systemName: "minus.circle")
                             }
+                            .foregroundColor(AppTheme.textSecondary)
                             .frame(height: title_height * 1.5 )
                             .frame(width: title_width )
                             
@@ -316,13 +398,16 @@ struct ContentView: View {
                                 }){
                                     Text(discount_b)
                                     .font(.title2)
-                                    .foregroundColor(isWhitch == 2 ? .blue : .black)
+                                    .foregroundColor(isWhitch == 2 ? AppTheme.indigo : AppTheme.textPrimary)
                                     .id(buttonPositions[9])
                                     .frame(height: item_height )
                                     .frame(width: item_width )
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .fill(CurIndex == 9 ? AppTheme.amberLight : AppTheme.background))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10)
-                                            .stroke(CurIndex == 9 ? Color.orange : Color.gray, lineWidth: 3))
+                                            .stroke(CurIndex == 9 ? AppTheme.amber : AppTheme.cardBorder, lineWidth: CurIndex == 9 ? 3 : 1.5))
                                 }
                             }
                             
@@ -340,10 +425,16 @@ struct ContentView: View {
                 
                 
             }
-            .background(Color(red: 255/255, green: 255/255, blue: 220/255))
-            .padding(.top, 10)
+            .background(
+                // カード状の白背景。ステータスバー裏まで伸ばし、上部の余白を目立たなくする。
+                // ※ タップ可能なボタン類はセーフエリアの外に置けない仕様のため、背景色のみ拡張。
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(AppTheme.cardSurface)
+                    .shadow(color: Color.black.opacity(0.06), radius: 6, x: 0, y: 3)
+                    .ignoresSafeArea(edges: .top)
+            )
+            .padding(.top, 4)
             .padding(.horizontal, 5)
-//            .background(Color(red: 240/255, green: 255/255, blue: 240/255))
 
             
             /*===========================================================
@@ -353,50 +444,84 @@ struct ContentView: View {
                 HStack{
                     Button(action: {
                         Trash_A()
-                        
+
                     }){
                         Image(systemName: "trash")
                             .font(.title2)
-                            .foregroundColor(Color(red: 55/255, green: 55/255, blue: 55/255))
+                            .foregroundColor(AppTheme.textSecondary)
                     }
                     .frame(height: item_height2 )
                     .frame(width: item_width )
-                    
+
 //                    VStack{
 //                        Text("")
 //                            .font(.title3)
 //                    }
 //                    .frame(height: title_height )
 //                    .frame(width: title_width )
-                    
+
                     Button(action: {
                         Trash_ALL()
-                        
+
                     }){
                         Image(systemName: "trash")
                             .font(.title2)
-                            .foregroundColor(Color(red: 200/255, green: 55/255, blue: 55/255))
+                            .foregroundColor(AppTheme.coral)
                     }
                     .frame(height: item_height2 )
                     .frame(width: item_width/3 )
-                    
-                    
+
+
                     Button(action: {
                         Trash_B()
-                
+
                     }){
                         Image(systemName: "trash")
                             .font(.title2)
-                            .foregroundColor(Color(red: 55/255, green: 55/255, blue: 55/255))
+                            .foregroundColor(AppTheme.textSecondary)
                     }
                     .frame(height: item_height2 )
                     .frame(width: item_width )
                 }
-                .frame(height: item_height)
+                .frame(height: item_height2)
                 .padding(.horizontal)
             }
-            
-            
+
+            /*===========================================================
+             ARスキャン（カメラで値札を読み取り、価格・容量を自動入力）
+             ===========================================================*/
+            Button(action: {
+                // 7回タップするごとに、AR画面を開く前に全面広告を1回表示する。
+                arScanTapCount += 1
+                if arScanTapCount % 7 == 0 {
+                    interstitialAdManager.showAd {
+                        showARScanner = true
+                    }
+                } else {
+                    showARScanner = true
+                }
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "camera.viewfinder")
+                    Text("ARスキャン")
+                }
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: ar_button_height)
+                    .background(
+                        LinearGradient(
+                            colors: [AppTheme.indigo, AppTheme.indigoDark],
+                            startPoint: .top, endPoint: .bottom)
+                    )
+                    .cornerRadius(14)
+                    .shadow(color: AppTheme.indigoDark.opacity(0.35), radius: 6, x: 0, y: 3)
+            }
+            .padding(.horizontal, 24)
+            .fullScreenCover(isPresented: $showARScanner) {
+                PriceTagScannerView(onFinished: handleARScanResult)
+            }
+
             /*===========================================================
              下部
              ===========================================================*/
@@ -408,26 +533,20 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
-                    
-                    
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
+
+
                     Button("8") {
                         Num_8()
                     }
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button("9") {
                         Num_9()
@@ -435,12 +554,9 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button("▶︎") {
                         Cursor_Next()
@@ -448,12 +564,9 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.indigo)
+                    .cornerRadius(14)
 
                 }
                 .padding(.horizontal)
@@ -465,26 +578,20 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
-                    
-                    
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
+
+
                     Button("5") {
                         Num_5()
                     }
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button("6") {
                         Num_6()
@@ -492,12 +599,9 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button("◀︎") {
                         Cursor_Prev()
@@ -505,12 +609,9 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.indigo)
+                    .cornerRadius(14)
 
                 }
                 .padding(.horizontal)
@@ -523,26 +624,20 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
-                    
-                    
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
+
+
                     Button("2") {
                         Num_2()
                     }
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button("3") {
                         Num_3()
@@ -550,12 +645,9 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button("Del") {
                         Num_Delete()
@@ -563,12 +655,9 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title2)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.coral)
+                    .cornerRadius(14)
 
                 }
                 .padding(.horizontal)
@@ -581,26 +670,20 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
-                    
-                    
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
+
+
                     Button("0") {
                         Num_0()
                     }
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
                     Button(".") {
                         Num_Dot()
@@ -608,32 +691,32 @@ struct ContentView: View {
                     .frame(width: button_weight)
                     .frame(height: button_height)
                     .font(.title)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.keypadKey)
+                    .cornerRadius(14)
 
-                    Button("") {
-                        Num_Empty()
+                    Button(action: {
+                        showHelp = true
+                    }) {
+                        Image(systemName: "questionmark.circle.fill")
+                            .font(.title)
                     }
                     .frame(width: button_weight)
                     .frame(height: button_height)
-                    .font(.title2)
-                    .foregroundColor(.white) // 文字色を白に
-                    .background(Color(red: 75/255, green: 75/255, blue: 75/255))
-                    .cornerRadius(10)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 10)
-                            .stroke(Color.gray, lineWidth: 3))
+                    .foregroundColor(.white)
+                    .background(AppTheme.amber)
+                    .cornerRadius(14)
+                    .sheet(isPresented: $showHelp) {
+                        HelpView()
+                    }
 
                 }
                 .padding(.horizontal)
 
             }
             .frame(height: keyboard_height)
-            .background(Color(red: 85/255, green: 85/255, blue: 85/255))
+            .background(AppTheme.keypadBackground)
+            .cornerRadius(20)
             .padding(.horizontal, 5)
 
 
@@ -646,7 +729,27 @@ struct ContentView: View {
 //                .frame(height: admob_height)
 
         }
+        .background(AppTheme.background.ignoresSafeArea())
     }
+
+    /**************************************************
+     * お得判定バッジ
+     *  勝っている側の単位価格ボックスの角に添えるリボン状バッジ。
+     *************************************************/
+    private func dealBadge(color: Color) -> some View {
+        HStack(spacing: 2) {
+            Image(systemName: "star.fill")
+            Text("お得!")
+        }
+        .font(.system(size: 11, weight: .heavy))
+        .foregroundColor(.white)
+        .padding(.horizontal, 7)
+        .padding(.vertical, 3)
+        .background(color)
+        .clipShape(Capsule())
+        .shadow(color: color.opacity(0.5), radius: 3, x: 0, y: 2)
+    }
+
     func Calculation(){
         var pri_a:Double = 0
         var pri_b:Double = 0
@@ -823,9 +926,37 @@ struct ContentView: View {
         else {
             isWhitch = 0
         }
-        
+
     }
-    
+
+    /**************************************************
+     * ARスキャン結果の反映
+     *  Android版 MainActivity.onArResult() に相当。
+     *  取得できた値だけをセットし（未取得はnilのまま既存値を保持）、
+     *  自動的に単価計算を行う。
+     *************************************************/
+    func handleARScanResult(_ result: PriceTagScanResult?) {
+        // スキャナー側のdismissに加えて、こちらからも確実にfullScreenCoverを閉じる。
+        showARScanner = false
+
+        guard let result else { return } // キャンセル時はここで終了
+
+        if let priceA = result.priceA {
+            price_a = String(priceA)
+        }
+        if let volumeA = result.volumeA {
+            capacity_a = String(volumeA)
+        }
+        if let priceB = result.priceB {
+            price_b = String(priceB)
+        }
+        if let volumeB = result.volumeB {
+            capacity_b = String(volumeB)
+        }
+
+        Calculation()
+    }
+
     func NumDataInput(){
         //cursorによってswitch caseでデータセット
         switch CurIndex {
